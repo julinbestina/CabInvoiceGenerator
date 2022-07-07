@@ -1,8 +1,10 @@
 package com.bl.cab;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
 @Getter
 @Setter
 @ToString
@@ -25,5 +27,5 @@ public class InvoiceBill {
         InvoiceBill that = (InvoiceBill) o;
         return totalRide == that.totalRide && Double.compare(that.totalFare, totalFare) == 0 && avgFare == that.avgFare;
     }
-}
 
+}

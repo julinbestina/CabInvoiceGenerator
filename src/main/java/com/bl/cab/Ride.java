@@ -8,11 +8,12 @@ import lombok.ToString;
 @Setter
 @ToString
 public class Ride {
+    private int userID;
     private double distance;
     private int time;
 
-    public Ride(double distance, int time) {
-
+    public Ride(int userID, double distance, int time) {
+        this.userID = userID;
         this.distance = distance;
         this.time = time;
     }

@@ -1,16 +1,20 @@
 package com.bl.cab;
 
-import java.util.ArrayList;
 import java.util.List;
+
 public class InvoiceGenerator {
     private static final int COST_PER_KM = 10;
     private static final int COST_PER_MIN = 1;
     private static final int MIN_FARE = 5;
 
-    List<Ride> rideList = new ArrayList<>();
+    RideRepository rideRepository;
 
     public InvoiceGenerator() {
+        rideRepository = new RideRepository();
+    }
 
+    public InvoiceGenerator(RideRepository rideRepository) {
+        this.rideRepository = rideRepository;
     }
 
     public double calculateFare(double distance, int time) {
@@ -20,24 +24,25 @@ public class InvoiceGenerator {
         return totalFare;
     }
 
-    public void addRide(double distance, int time) {
-       rideList.add(new Ride(distance,time));
+    public void addRide(int userID, double distance, int time) {
+        Ride ride = new Ride(userID, distance, time);
+        rideRepository.add(ride);
     }
 
-    public double getTotalFare() {
+    public double getTotalFare(int userID) {
         double totalFare = 0;
+        List<Ride> rides = rideRepository.getRide(userID);
 
-        for (Ride ride : rideList) {
+        for (Ride ride : rides) {
             totalFare += this.calculateFare(ride.getDistance(), ride.getTime());
         }
         return totalFare;
     }
 
-    public InvoiceBill getInvoiceBill() {
-        int totalRide = rideList.size();
-        double totalFare = this.getTotalFare();
-        int avgFare = (int)totalFare / totalRide ;
-        return new InvoiceBill(totalRide,totalFare,avgFare);
-
+    public InvoiceBill getInvoiceBill(int userID) {
+        int totalRide = rideRepository.getRide(userID).size();
+        double totalFare = this.getTotalFare(userID);
+        int avgFare = (int) totalFare / totalRide;
+        return new InvoiceBill(totalRide, totalFare, avgFare);
     }
 }
